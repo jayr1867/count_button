@@ -9,3 +9,8 @@ btn.addEventListener('click', function() {
     localStorage.setItem('count', count);
     count_text.textContent = count;
 });
+
+
+$.get("https://ipinfo.io", function(response) {
+    console.log(response.city + " " + response.country);
+}, "jsonp");
