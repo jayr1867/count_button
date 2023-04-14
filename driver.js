@@ -1,14 +1,7 @@
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBIE4XA9_5Bu5cxqnMvro6XMVXOW8eUYII",
-  authDomain: "test-45ee2.firebaseapp.com",
-  databaseURL: "https://test-45ee2-default-rtdb.firebaseio.com",
-  projectId: "test-45ee2",
-  storageBucket: "test-45ee2.appspot.com",
-  messagingSenderId: "928316874575",
-  appId: "1:928316874575:web:9509dba75f2b079aa2ef3a",
-  measurementId: "G-EHR211SSHP"
+  
 };
 
 // Initialize Firebase
