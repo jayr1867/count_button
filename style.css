@@ -47,3 +47,19 @@
     background-color: #9f9f9f;
     color: #2a1e46;
 }
+
+#loc_tbl{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#tbl, #tbl td, #tbl th{
+    width: 50%;
+    border-collapse: collapse;
+    border: 2px solid #2a1e46;
+    font-family: 'Copperplate';
+    font-size: 20px;
+    color: #2a1e46;
+}
