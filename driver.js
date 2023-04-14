@@ -1,29 +1,10 @@
-import APIKey from "/key.js";
-
-const firebaseConfig = {
-  apiKey: APIKey,
-  authDomain: "test-45ee2.firebaseapp.com",
-  databaseURL: "https://test-45ee2-default-rtdb.firebaseio.com",
-  projectId: "test-45ee2",
-  storageBucket: "test-45ee2.appspot.com",
-  messagingSenderId: "928316874575",
-  appId: "1:928316874575:web:9509dba75f2b079aa2ef3a",
-  measurementId: "G-EHR211SSHP"
-};
-
-// Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-firebase.initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-
-const db = firebase.database();
-
 
 var btn = document.getElementById('btn');
 var count_text = document.getElementById('cnt_txt');
 
 var dict = {};
 let place = {};
+var checl = {};
 var loc = "";
 var check = false;
 
@@ -32,16 +13,11 @@ count_text.textContent = count;
 $.ajaxSetup({async:false});
 let table = document.getElementById("tbl");
 
+fetch('https://servercounter.jayraval20.repl.co/api/data')
+  .then(response => response.json())
+  .then(data => {
+    place = (data);
 
-const ref = db.ref('/'); // get a reference to the root of the database
-
-      ref.once('value')
-        .then((snapshot) => {
-          const data = snapshot.val();
-          dict = (data);
-          var keys = Object.keys(dict);
-          place = dict[keys[0]];
-          console.log(Object.keys(place).length);
           for (var i = 0; i < Object.keys(place).length; i++) {
             var row = table.insertRow(i+1);
             var cell1 = row.insertCell(0);
@@ -49,12 +25,12 @@ const ref = db.ref('/'); // get a reference to the root of the database
             cell1.innerHTML = Object.keys(place)[i];
             cell2.innerHTML = Object.values(place)[i];
           }
-          
-          // console.log(typeof(data));
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    console.log(data);
+    checl = place;
+  })
+  .catch(error => {
+    console.error(error);
+  });
 
 
 
@@ -68,31 +44,45 @@ btn.addEventListener('click', function() {
 if (check == true) {
   $.get("https://ipinfo.io", function(response) {
       loc = response.city + ", " + response.country;
+      console.log(loc)
 
-      const ref = db.ref('/'); // get a reference to the root of the database
+      fetch('https://servercounter.jayraval20.repl.co/api/data')
+        .then(response => response.json())
+        .then(data => {
+          place = (data);
+            place[loc] = (place[loc] || 0) + 1;
 
-      ref.once('value')
-        .then((snapshot) => {
-          const data = snapshot.val();
-          dict = (data);
-          var keys = Object.keys(dict);
-          place = dict[keys[0]];
-        
-        place[loc] = (place[loc] || 0) + 1;
-
-        db.ref('location').update(place);
-        $("#tbl td").remove();
-
-        for (var i = 0; i < Object.keys(place).length; i++) {
-          var row = table.insertRow(i+1);
-          var cell1 = row.insertCell(0);
-          var cell2 = row.insertCell(1);
-          cell1.innerHTML = Object.keys(place)[i];
-          cell2.innerHTML = Object.values(place)[i];
-        }
-          // console.log(typeof(data));
+          fetch('https://servercounter.jayraval20.repl.co/api/manipulated_data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(place)
         })
-        .catch((error) => {
+          .then(response => response.json())
+          .then(data => {
+            // handle response from server
+            
+            console.log(data)
+
+            $("#tbl td").remove();
+
+            for (var i = 0; i < Object.keys(place).length; i++) {
+              var row = table.insertRow(i+1);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = Object.keys(place)[i];
+              cell2.innerHTML = Object.values(place)[i];
+            }
+            
+          })
+          .catch(error => {
+            console.error(error);
+          });
+
+         
+        })
+        .catch(error => {
           console.error(error);
         });
 
