@@ -4,7 +4,7 @@ var count_text = document.getElementById('cnt_txt');
 
 var dict = {};
 let place = {};
-var checl = {};
+
 var loc = "";
 var check = false;
 
@@ -25,8 +25,6 @@ fetch('https://servercounter.jayraval20.repl.co/api/data')
             cell1.innerHTML = Object.keys(place)[i];
             cell2.innerHTML = Object.values(place)[i];
           }
-    console.log(data);
-    checl = place;
   })
   .catch(error => {
     console.error(error);
@@ -44,7 +42,6 @@ btn.addEventListener('click', function() {
 if (check == true) {
   $.get("https://ipinfo.io", function(response) {
       loc = response.city + ", " + response.country;
-      console.log(loc)
 
       fetch('https://servercounter.jayraval20.repl.co/api/data')
         .then(response => response.json())
@@ -63,7 +60,7 @@ if (check == true) {
           .then(data => {
             // handle response from server
             
-            console.log(data)
+            // console.log(data)
 
             $("#tbl td").remove();
 
